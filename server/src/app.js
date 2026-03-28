@@ -4,7 +4,7 @@ import dotenv from "dotenv";
 import memoryVaultRoutes from "./routes/memoryVaultRoutes.js";
 import patientRoutes from "./routes/patientRoutes.js";
 
-dotenv.config();
+dotenv.config({quiet: true});
 
 const app = express();
 
