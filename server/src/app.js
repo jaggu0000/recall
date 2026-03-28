@@ -3,6 +3,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import memoryVaultRoutes from "./routes/memoryVaultRoutes.js";
 import patientRoutes from "./routes/patientRoutes.js";
+import ttsRouter from "./routes/ttsRoutes.js";
 
 dotenv.config({quiet: true});
 
@@ -13,10 +14,10 @@ const app = express();
 // ─────────────────────────────────────────────
 app.use(
   cors({
-    origin: process.env.CLIENT_URL,
-    credentials: true,
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization"],
+    origin: "*",
+    // credentials: true,
+    // methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    // allowedHeaders: ["Content-Type", "Authorization"],
   }),
 );
 app.use(express.json());
@@ -26,6 +27,7 @@ app.use(express.json());
 // ─────────────────────────────────────────────
 app.use("/api/memory-vault", memoryVaultRoutes);
 app.use("/api/patients", patientRoutes);
+app.use('/whisper', ttsRouter)
 
 // ─────────────────────────────────────────────
 // Health check
