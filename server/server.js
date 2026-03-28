@@ -9,15 +9,18 @@ const PORT = process.env.PORT || 5000;
 const MONGO_URI = process.env.MONGO_URI;
 
 import dns from "node:dns/promises";
+import { initDefaultPatient } from "./utils/initPatient.js";
 
 const server = express();
 server.use("/api", app); // Assigning prefix
 
 const startServer = async () => {
-	try {
-        dns.setServers(["1.1.1.1"]);
-		await mongoose.connect(MONGO_URI);
-		console.log("✅ MongoDB connected");
+  try {
+    dns.setServers(["1.1.1.1"]);
+    await mongoose.connect(MONGO_URI);
+    console.log("✅ MongoDB connected");
+
+    await initDefaultPatient();
 
     server.listen(PORT, () => {
       console.log(`🚀 Server running on port ${PORT}`);
