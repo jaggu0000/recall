@@ -198,6 +198,22 @@ const PatientSchema = new Schema(
 			type: String,
 			default: "",
 		},
+		// Live location of the patient (updated from their device)
+		location: {
+			type: {
+				type: String,
+				enum: ["Point"],
+				default: "Point",
+			},
+			coordinates: {
+				type: [Number], // [longitude, latitude] — GeoJSON order
+				default: [0, 0],
+			},
+			lastUpdated: {
+				type: Date,
+				default: null,
+			},
+		},
 		// The caregiver/family account that manages this patient
 		managedBy: {
 			type: Schema.Types.ObjectId,
@@ -257,6 +273,9 @@ MemoryVaultSchema.index({ patientId: 1, type: 1 });
 
 // Fast lookup of high-priority persons (for face recognition hit list)
 MemoryVaultSchema.index({ patientId: 1, "personData.person_priority": -1 });
+
+// Geospatial index for patient location tracking
+PatientSchema.index({ location: "2dsphere" });
 
 // ─────────────────────────────────────────────
 // Exports

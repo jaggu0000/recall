@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import memoryVaultRoutes from "./routes/memoryVaultRoutes.js";
+import patientRoutes from "./routes/patientRoutes.js";
 
 dotenv.config();
 
@@ -24,6 +25,7 @@ app.use(express.json());
 // Routes
 // ─────────────────────────────────────────────
 app.use("/api/memory-vault", memoryVaultRoutes);
+app.use("/api/patients", patientRoutes);
 
 // ─────────────────────────────────────────────
 // Health check
