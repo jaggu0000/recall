@@ -120,6 +120,16 @@ export default function PatientForm() {
     e.preventDefault();
     console.log("Submitted:", { ...form, memories });
     setSubmitted(true);
+    setForm({
+      name: "",
+      images: [],
+      dateOfBirth: "",
+      relation: "",
+      priority: "",
+    });
+    setMemories([]);
+    setImagePreviews([]);
+    setTagInputs({});
   };
 
   // Shared input classes

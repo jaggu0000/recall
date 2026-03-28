@@ -28,17 +28,17 @@ export default function LocationTracker({ userId = "patient-1" }) {
 
         console.log(location, "location");
 
-        // await fetch("http://localhost:5000/api/location", {
-        //   method: "POST",
-        //   headers: {
-        //     "Content-Type": "application/json",
-        //   },
-        //   body: JSON.stringify({
-        //     userId,
-        //     location,
-        //     timestamp: new Date(),
-        //   }),
-        // });
+        await fetch(`http://localhost:5000/api/patients/${userId}/location`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            userId,
+            location,
+            timestamp: new Date(),
+          }),
+        });
 
         console.log("📍 Location sent:", location);
       } catch (err) {
