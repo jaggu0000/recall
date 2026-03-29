@@ -7,8 +7,14 @@ import fs from 'fs'
 const router = express.Router()
 const upload = multer({ dest: 'uploads/' })
 
+// POST /whisper/transcribe
+// Forwards audio file to your Python Whisper server on port 8000
 router.post('/transcribe', upload.single('file'), async (req, res) => {
 	try {
+		if (!req.file) {
+			return res.status(400).json({ error: 'No audio file provided' })
+		}
+
 		const formData = new FormData()
 		formData.append('file', fs.createReadStream(req.file.path))
 
@@ -17,12 +23,14 @@ router.post('/transcribe', upload.single('file'), async (req, res) => {
 		})
 
 		res.json(response.data)
-
-		// cleanup
-		fs.unlinkSync(req.file.path)
 	} catch (err) {
-		console.error(err)
-		res.status(500).json({ error: 'Transcription failed' })
+		console.error('Transcription error:', err.message)
+		res.status(500).json({ error: 'Transcription failed', detail: err.message })
+	} finally {
+		// Always clean up uploaded file
+		if (req.file?.path && fs.existsSync(req.file.path)) {
+			fs.unlinkSync(req.file.path)
+		}
 	}
 })
 

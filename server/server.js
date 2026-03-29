@@ -1,34 +1,32 @@
-import mongoose from "mongoose";
-import dotenv from "dotenv";
-import app from "./src/app.js";
-import express from "express"
+import mongoose from 'mongoose'
+import dotenv from 'dotenv'
+import dns from 'node:dns/promises'
+import app from './src/app.js'
 
-dotenv.config({quiet: true});
+dotenv.config({ quiet: true })
 
-const PORT = process.env.PORT || 5000;
-const MONGO_URI = process.env.MONGO_URI;
-
-import dns from "node:dns/promises";
-import { initDefaultPatient } from "./utils/initPatient.js";
-
-const server = express();
-server.use("/api", app); // Assigning prefix
+const PORT = process.env.PORT || 5000
+const MONGO_URI = process.env.MONGO_URI
 
 const startServer = async () => {
-  try {
-    dns.setServers(["1.1.1.1"]);
-    await mongoose.connect(MONGO_URI);
-    console.log("✅ MongoDB connected");
+	try {
+		dns.setDefaultResultOrder('ipv4first')
+		dns.setServers(['1.1.1.1', '8.8.8.8'])
 
-    await initDefaultPatient();
+		if (MONGO_URI) {
+			await mongoose.connect(MONGO_URI)
+			console.log('✅ MongoDB connected')
+		} else {
+			console.log('⚠️  No MONGO_URI — running with hardcoded demo data')
+		}
+	} catch (err) {
+		console.warn('⚠️  MongoDB failed:', err.message)
+		console.log('▶️  Starting anyway with hardcoded demo data...')
+	}
 
-    server.listen(PORT, () => {
-      console.log(`🚀 Server running on port ${PORT}`);
-    });
-  } catch (err) {
-    console.error("❌ Failed to connect to MongoDB:", err.message);
-    process.exit(1);
-  }
-};
+	app.listen(PORT, () => {
+		console.log(`🚀 Server on http://localhost:${PORT}`)
+	})
+}
 
-startServer();
+startServer()
