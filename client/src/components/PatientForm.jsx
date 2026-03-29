@@ -181,9 +181,6 @@ export default function PatientForm() {
               </p>
             </div>
           </div>
-          <span className="bg-amber-400 text-white text-xs font-bold px-4 py-1.5 rounded-full tracking-wide">
-            New Profile
-          </span>
         </header>
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-6">
