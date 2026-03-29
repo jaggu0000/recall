@@ -28,16 +28,19 @@ export default function LocationTracker({
 
         const { latitude, longitude } = await getLocation();
 
-        await fetch(`http://localhost:5000/api/patients/${userId}/location`, {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
+        await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/api/patients/${userId}/location`,
+          {
+            method: "PATCH",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              latitude,
+              longitude,
+            }),
           },
-          body: JSON.stringify({
-            latitude,
-            longitude,
-          }),
-        });
+        );
 
         console.log("📍 Location sent:", location);
       } catch (err) {

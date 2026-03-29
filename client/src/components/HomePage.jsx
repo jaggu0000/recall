@@ -115,9 +115,10 @@ export default function HomePage() {
   const [selectedPerson, setSelectedPerson] = useState(null); // for detail modal
   const [search, setSearch] = useState("");
 
-  const filtered = persons.filter((p) =>
-    p.name.toLowerCase().includes(search.toLowerCase()) ||
-    p.relation.toLowerCase().includes(search.toLowerCase())
+  const filtered = persons.filter(
+    (p) =>
+      p.name.toLowerCase().includes(search.toLowerCase()) ||
+      p.relation.toLowerCase().includes(search.toLowerCase()),
   );
 
   const handleSave = (newPerson) => {
@@ -128,38 +129,46 @@ export default function HomePage() {
   // Lock body scroll when drawer / detail open
   useEffect(() => {
     document.body.style.overflow = drawerOpen || selectedPerson ? "hidden" : "";
-    return () => { document.body.style.overflow = ""; };
+    return () => {
+      document.body.style.overflow = "";
+    };
   }, [drawerOpen, selectedPerson]);
 
   return (
     <div className="min-h-screen bg-stone-950 flex font-serif">
-
       {/* ── Sidebar ──────────────────────────────────────────────────── */}
       <aside className="hidden lg:flex flex-col w-64 shrink-0 bg-stone-900 border-r border-stone-800 min-h-screen px-6 py-8">
         {/* Logo */}
         <div className="flex items-center gap-3 mb-10">
           <span className="text-3xl">🧠</span>
           <div>
-            <p className="text-white font-bold text-base tracking-tight leading-tight">MemoryCare</p>
-            <p className="text-stone-500 text-[11px] italic">Dementia Care Platform</p>
+            <p className="text-white font-bold text-base tracking-tight leading-tight">
+              Recall
+            </p>
+            <p className="text-stone-500 text-[11px] italic">
+              Restoring Moments
+              <br /> one memory at time
+            </p>
           </div>
         </div>
 
         {/* Nav */}
         <nav className="flex flex-col gap-1 mb-auto">
           {[
-            { icon: "⊞", label: "Dashboard", active: true },
-            { icon: "👤", label: "Persons", active: false },
-            { icon: "💭", label: "Memories", active: false },
+            { icon: "⊞", label: "Dashboard", active: false },
+            // { icon: "👤", label: "Persons", active: false },
+            { icon: "💭", label: "Memories", active: true },
             { icon: "📍", label: "Locations", active: false },
             { icon: "⚙️", label: "Settings", active: false },
           ].map(({ icon, label, active }) => (
             <button
               key={label}
               className={`flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-left transition
-                ${active
-                  ? "bg-amber-400 text-stone-900 font-semibold shadow-lg shadow-amber-400/20"
-                  : "text-stone-400 hover:bg-stone-800 hover:text-white"}`}
+                ${
+                  active
+                    ? "bg-amber-400 text-stone-900 font-semibold shadow-lg shadow-amber-400/20"
+                    : "text-stone-400 hover:bg-stone-800 hover:text-white"
+                }`}
             >
               <span className="text-base">{icon}</span> {label}
             </button>
@@ -168,8 +177,16 @@ export default function HomePage() {
 
         {/* Stats */}
         <div className="mt-8 space-y-3">
-          <StatPill label="Total Persons" value={persons.length} color="text-amber-400" />
-          <StatPill label="Total Memories" value={persons.reduce((s, p) => s + p.memories.length, 0)} color="text-emerald-400" />
+          <StatPill
+            label="Total Persons"
+            value={persons.length}
+            color="text-amber-400"
+          />
+          <StatPill
+            label="Total Memories"
+            value={persons.reduce((s, p) => s + p.memories.length, 0)}
+            color="text-emerald-400"
+          />
           <StatPill
             label="High Priority"
             value={persons.filter((p) => p.priority <= 2).length}
@@ -180,17 +197,22 @@ export default function HomePage() {
 
       {/* ── Main content ─────────────────────────────────────────────── */}
       <main className="flex-1 flex flex-col min-h-screen bg-amber-50">
-
         {/* Top bar */}
         <header className="sticky top-0 z-20 bg-amber-50/90 backdrop-blur border-b border-amber-100 px-6 py-4 flex items-center justify-between gap-4">
           <div>
-            <h1 className="text-xl font-bold text-stone-800 tracking-tight">Person Profiles</h1>
-            <p className="text-xs text-stone-400 italic mt-0.5">{persons.length} people registered</p>
+            <h1 className="text-xl font-bold text-stone-800 tracking-tight">
+              Profiles
+            </h1>
+            <p className="text-xs text-stone-400 italic mt-0.5">
+              {persons.length} people registered
+            </p>
           </div>
 
           {/* Search */}
           <div className="flex-1 max-w-xs relative">
-            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-stone-400 text-sm">🔍</span>
+            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-stone-400 text-sm">
+              🔍
+            </span>
             <input
               value={search}
               onChange={(e) => setSearch(e.target.value)}
@@ -229,7 +251,9 @@ export default function HomePage() {
                 onClick={() => setDrawerOpen(true)}
                 className="border-2 border-dashed border-amber-200 rounded-2xl p-8 flex flex-col items-center justify-center gap-3 text-stone-400 hover:border-amber-400 hover:text-amber-500 hover:bg-amber-50 transition group min-h-[200px]"
               >
-                <span className="text-4xl group-hover:scale-110 transition">＋</span>
+                <span className="text-4xl group-hover:scale-110 transition">
+                  ＋
+                </span>
                 <span className="text-sm font-semibold">Add New Person</span>
               </button>
             </div>
@@ -256,7 +280,9 @@ export default function HomePage() {
             <span className="text-2xl">🧠</span>
             <div>
               <p className="font-bold text-stone-800 text-base">New Profile</p>
-              <p className="text-xs text-stone-400 italic">Fill in details and memories</p>
+              <p className="text-xs text-stone-400 italic">
+                Fill in details and memories
+              </p>
             </div>
           </div>
           <button
@@ -269,7 +295,10 @@ export default function HomePage() {
 
         {/* Embedded form */}
         <div className="px-6 py-6">
-          <PersonForm onSave={handleSave} onClose={() => setDrawerOpen(false)} />
+          <PersonForm
+            onSave={handleSave}
+            onClose={() => setDrawerOpen(false)}
+          />
         </div>
       </div>
 
@@ -288,10 +317,13 @@ export default function HomePage() {
 //  PERSON TILE
 // ─────────────────────────────────────────────────────────────────────────────
 function PersonTile({ person, index, onClick }) {
-  const ringColor = PRIORITY_RING[(person.priority - 1)] || "ring-stone-300";
+  const ringColor = PRIORITY_RING[person.priority - 1] || "ring-stone-300";
   const relColor = RELATION_COLORS[person.relation] || RELATION_COLORS.Other;
   const avColor = avatarColor(person.name);
-  const allTags = [...new Set(person.memories.flatMap((m) => m.tags))].slice(0, 4);
+  const allTags = [...new Set(person.memories.flatMap((m) => m.tags))].slice(
+    0,
+    4,
+  );
 
   return (
     <button
@@ -302,9 +334,15 @@ function PersonTile({ person, index, onClick }) {
       <div className="p-5">
         {/* Avatar + name row */}
         <div className="flex items-start gap-4 mb-4">
-          <div className={`relative shrink-0 w-14 h-14 rounded-2xl ${avColor} flex items-center justify-center text-xl font-bold ring-4 ring-offset-2 ring-white ${ringColor}`}>
+          <div
+            className={`relative shrink-0 w-14 h-14 rounded-2xl ${avColor} flex items-center justify-center text-xl font-bold ring-4 ring-offset-2 ring-white ${ringColor}`}
+          >
             {person.images?.length > 0 && person.images[0]?.url ? (
-              <img src={person.images[0].url} alt={person.name} className="w-full h-full object-cover rounded-2xl" />
+              <img
+                src={person.images[0].url}
+                alt={person.name}
+                className="w-full h-full object-cover rounded-2xl"
+              />
             ) : (
               getInitials(person.name)
             )}
@@ -319,22 +357,26 @@ function PersonTile({ person, index, onClick }) {
               {person.name}
             </h3>
             <div className="flex items-center gap-2 mt-1 flex-wrap">
-              <span className={`text-[11px] font-semibold px-2.5 py-0.5 rounded-full ${relColor}`}>
+              <span
+                className={`text-[11px] font-semibold px-2.5 py-0.5 rounded-full ${relColor}`}
+              >
                 {person.relation}
               </span>
-              <span className="text-[11px] text-stone-400">Age {calcAge(person.dateOfBirth)}</span>
+              <span className="text-[11px] text-stone-400">
+                Age {calcAge(person.dateOfBirth)}
+              </span>
             </div>
           </div>
         </div>
 
         {/* Stats row */}
-        <div className="flex gap-3 mb-4">
+        {/* <div className="flex gap-3 mb-4">
           <InfoChip icon="💭" label={`${person.memories.length} memor${person.memories.length !== 1 ? "ies" : "y"}`} />
           <InfoChip icon="📅" label={formatDate(person.dateOfBirth)} />
-        </div>
+        </div> */}
 
         {/* Tag chips */}
-        {allTags.length > 0 && (
+        {/* {allTags.length > 0 && (
           <div className="flex flex-wrap gap-1.5">
             {allTags.map((tag) => (
               <span key={tag} className="text-[11px] px-2.5 py-0.5 rounded-full bg-stone-100 text-stone-500 font-medium">
@@ -347,13 +389,17 @@ function PersonTile({ person, index, onClick }) {
               </span>
             )}
           </div>
-        )}
+        )} */}
       </div>
 
       {/* Footer */}
       <div className="border-t border-amber-50 px-5 py-3 flex items-center justify-between bg-amber-50/50">
-        <span className="text-[11px] text-stone-400">Added {formatDate(person.addedAt)}</span>
-        <span className="text-xs text-amber-500 font-semibold group-hover:translate-x-1 transition">View →</span>
+        <span className="text-[11px] text-stone-400">
+          Added {formatDate(person.addedAt)}
+        </span>
+        <span className="text-xs text-amber-500 font-semibold group-hover:translate-x-1 transition">
+          View →
+        </span>
       </div>
     </button>
   );

@@ -7,7 +7,7 @@ export default function Home() {
     <>
       <HomePage />
       <FaceRecognition />
-      {/* <LocationTracker /> */}
+      <LocationTracker />
     </>
   );
 }
