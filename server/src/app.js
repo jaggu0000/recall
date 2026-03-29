@@ -25,8 +25,8 @@ app.use(express.json());
 // ─────────────────────────────────────────────
 // Routes
 // ─────────────────────────────────────────────
-app.use("/api/memory-vault", memoryVaultRoutes);
-app.use("/api/patients", patientRoutes);
+app.use("/memory-vault", memoryVaultRoutes);
+app.use("/patients", patientRoutes);
 app.use('/whisper', ttsRouter)
 
 // ─────────────────────────────────────────────

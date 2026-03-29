@@ -2,15 +2,17 @@
 
 import { useEffect } from "react";
 
-export default function LocationTracker({ userId = "patient-1" }) {
+export default function LocationTracker({
+  userId = "64f000000000000000000001",
+}) {
   // 📍 Get location
   const getLocation = () => {
     return new Promise((resolve, reject) => {
       navigator.geolocation.getCurrentPosition(
         (pos) => {
           resolve({
-            lat: pos.coords.latitude,
-            lng: pos.coords.longitude,
+            latitude: pos.coords.latitude,
+            longitude: pos.coords.longitude,
           });
         },
         (err) => reject(err),
@@ -24,21 +26,21 @@ export default function LocationTracker({ userId = "patient-1" }) {
       try {
         if (!navigator.onLine) return;
 
-        const location = await getLocation();
+        const { latitude, longitude } = await getLocation();
 
-        console.log(location, "location");
-
-        await fetch(`http://localhost:5000/api/patients/${userId}/location`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
+        await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/api/patients/${userId}/location`,
+          {
+            method: "PATCH",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              latitude,
+              longitude,
+            }),
           },
-          body: JSON.stringify({
-            userId,
-            location,
-            timestamp: new Date(),
-          }),
-        });
+        );
 
         console.log("📍 Location sent:", location);
       } catch (err) {
