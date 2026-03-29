@@ -116,20 +116,46 @@ export default function PatientForm() {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     console.log("Submitted:", { ...form, memories });
+    try {
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/memory-vault/`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            patientId: userId,
+            type: "person",
+            addedBy: "caretaker", // or dynamic
+
+            personData: {
+              name: form.name,
+              dateOfBirth: form.dateOfBirth,
+              relation: form.relation,
+              priority: form.priority,
+              memories: [], // initially empty
+            },
+          }),
+        },
+      );
+
+      const data = await res.json();
+
+      console.log("✅ Vault Created:", data);
+
+      // 👉 After creating, upload memories
+      if (form.images.length > 0) {
+        await uploadMemories(data._id);
+      }
+    } catch (err) {
+      console.error("❌ Submit error:", err);
+    }
+
     setSubmitted(true);
-    setForm({
-      name: "",
-      images: [],
-      dateOfBirth: "",
-      relation: "",
-      priority: "",
-    });
-    setMemories([]);
-    setImagePreviews([]);
-    setTagInputs({});
   };
 
   // Shared input classes
